@@ -6,7 +6,7 @@ import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 
-export default class App extends Component {
+class App extends Component {
   render() {
     return (
     <div>
@@ -21,3 +21,5 @@ export default class App extends Component {
   );
   } 
 };
+
+export default App;
