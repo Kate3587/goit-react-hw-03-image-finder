@@ -1,11 +1,18 @@
-import React from "react";
+import React, { Component } from "react";
 
-const ImageGallery = ({children}) => (
-    <>
-        <ul className="gallery">
-            {children}
-        </ul>
-    </>
-);
+class ImageGallery extends Component {
+
+    render() {
+        return (
+            <>
+                <ul className="gallery">
+                    {/* {children} */}
+                    <p>{this.props.searchName}</p>
+                </ul>
+            </>
+        );
+    }; 
+    
+};
 
 export default ImageGallery;
