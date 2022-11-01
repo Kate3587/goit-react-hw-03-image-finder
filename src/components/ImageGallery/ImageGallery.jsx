@@ -12,9 +12,7 @@ const ImageGallery = ({ items }) => {
                             alt={user}
                         />
                     ))
-                }
-            
-            {/* <p>{this.props.searchName}</p> */}
+            }
         </ul>
     );
     

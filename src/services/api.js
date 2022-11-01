@@ -24,14 +24,10 @@ const postApi = axios.create({
     baseURL: `https://pixabay.com/api/?${searchParams}`
 })
 
-// export const BASE_URL = `https://pixabay.com/api/?${searchParams}`;
+export const getPhoto = async param => {
+    const { data } = await postApi.get(`&q=${param}`);
 
-export const getPhoto = async (search) => {
-
-    const { data } = await postApi.get('&q=cat');
-    
     return data;
-  
 };
 
 // https://pixabay.com/api/?q=cat&pa`ge=1&key=your_key&image_type=photo&orientation=horizontal&per_page=12

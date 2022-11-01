@@ -8,28 +8,33 @@ class Searchbar extends Component{
     };
 
     handleChangeName = event => {
+        const { value } = event.currentTarget;
         this.setState({
-            search: event.currentTarget.value.toLowerCase()
+            search: value.toLowerCase()
         })
     };
 
     handleSubmit = event => {
         event.preventDefault()
 
-        if (this.state.search.trim() === '') {
+        const { search } = this.state;
+
+        if (search.trim() === '') {
             return alert('Please write search name.')   
         };
 
-        this.props.onSubmit(this.state.search)
+        this.props.onSubmit(search)
         this.setState({
             search: ''
         });
     };
 
     render() {
+        const { search } = this.state;
+
         return (
-            <header className="searchbar">
-                <form className="form" onSubmit={this.handleSubmit}>
+            <header className="searchbar" onSubmit={this.handleSubmit}>
+                <form className="form">
                     <button type="submit" className="button">
                         <span className="button-label">Search</span>
                     </button>
@@ -39,7 +44,7 @@ class Searchbar extends Component{
                         type="text"
                         autoComplete="off"
                         name="search"
-                        value={this.state.search}
+                        value={search}
                         onChange={this.handleChangeName}
                         autoFocus
                         placeholder="Search images and photos"
