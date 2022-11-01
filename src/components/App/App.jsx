@@ -7,6 +7,7 @@ import ImageGallery from '../ImageGallery/ImageGallery';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
 // import Modal from '../Modal/Modal';
+import { itemPerPage } from '../../services/api';
 
 
 
@@ -14,48 +15,43 @@ class App extends Component {
     state = {
       photos: [],
       searchName: '',
+      page: 1,
       status: Status.INIT,
     };
   
-  
-  // async componentDidMount () {
-  
-  //     // this.setState({ isLoading: true });
-  //   try {
-  //     const photo = (await getPhoto()).hits
-  //     console.log(photo)
-  //     this.setState({photos: photo})
-
-  //   } catch {
-  //     // this.setState({isError: true, status: Status.ERROR })
-  //     console.log('error')
-  //   } 
-  
+  // async componentDidMount ( ) {
+  //   const { searchName, page } = this.state; 
+  //   this.fetchPhoto(searchName, page)
   // };
 
   async componentDidUpdate(_, prevState) {
-    const { searchName } = this.state; 
+    const { searchName, page } = this.state; 
+   
     if (prevState.searchName !== searchName) {
-      this.setState({ status: Status.LOADING });
-
-      try {
-        const photo = (await getPhoto(searchName)).hits;
-        console.log(photo)
-        this.setState({
-          photos: photo,
-          status: Status.SUCCESS
-        })
-        // this.setState(prevState => (
-        //   {
-        //     photos: [...prevState.photos, photo],
-        //     status: Status.SUCCESS
-        //   }))
-      } catch {
+      this.fetchPhoto(searchName, page)  
+       
+    }
+  };
+ 
+  fetchPhoto = async (searchName, page) => {
+    this.setState({ status: Status.LOADING });
+      
+    try {
+      const photo = (await getPhoto(searchName, page)).hits;
+      const currentPage = page + 1;
+      if (currentPage <= photo.length) {
+        this.setState(prevState => (
+          {
+            photos: [...prevState.photos,...photo],
+               page: currentPage,
+            status: Status.SUCCESS
+          }))
+      }
+    } catch {
         // this.setState({ status: Status.ERROR })
         console.log('error')
       }
     }
-  }
 
   handleSubmit = (search) => {
     this.setState({
@@ -63,17 +59,22 @@ class App extends Component {
     })
   };
 
+  handleClickMore = () => {
+    const { searchName, page} = this.state;
+    
+    this.fetchPhoto(searchName, page);
+
+  };
 
   render() {
     const { photos, status } = this.state;
-    console.log(photos)
-
+    
     return (
       <div>
         <Searchbar onSubmit={this.handleSubmit} />
         {status === Status.LOADING && <Loader />}
         {status === Status.SUCCESS && <ImageGallery items={photos} />}
-        {status === Status.SUCCESS && <Button />}
+        {status === Status.SUCCESS && <Button onLoadMore={this.handleClickMore} />}
       {/* <Modal /> */}
     </div>
   );

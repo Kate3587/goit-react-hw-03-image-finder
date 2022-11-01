@@ -1,9 +1,12 @@
 
-const Button = () => {
-    <button
+const Button = ({onLoadMore}) => (
+    <div>
+        <button
+        onClick={onLoadMore}
         type="button">
         Load More
-    </button>
-};
+        </button>  
+    </div>
+);
 
 export default Button;

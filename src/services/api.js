@@ -7,7 +7,6 @@ import axios from 'axios';
 // }
 
 export const itemPerPage = 12;
-export const currentPage = 1;
 
 const API_KEY = '30976438-b9570cf67e96eec486343edd5';
 const searchParams = new URLSearchParams({
@@ -16,7 +15,6 @@ const searchParams = new URLSearchParams({
     orientation: 'horizontal',
     safesearch: 'true',
     per_page: itemPerPage,
-    page: currentPage,
     
 });
 
@@ -24,9 +22,9 @@ const postApi = axios.create({
     baseURL: `https://pixabay.com/api/?${searchParams}`
 })
 
-export const getPhoto = async param => {
-    const { data } = await postApi.get(`&q=${param}`);
-
+export const getPhoto = async (param, page) => {
+    // const { data } = await postApi.get(`&q=${param}&page=${page}`);
+    const { data } = await postApi.get(`&q=${param}&page=${page}`);
     return data;
 };
 

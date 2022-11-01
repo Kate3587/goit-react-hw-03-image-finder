@@ -1,9 +1,9 @@
-import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem'
+import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem';
 
 const ImageGallery = ({ items }) => {
-    console.log(items)
     return (
-        <ul className="gallery">
+        <>
+             <ul className="gallery">
             {
                 items.map(({ id, webformatURL, user }) => (
                         <ImageGalleryItem
@@ -13,7 +13,9 @@ const ImageGallery = ({ items }) => {
                         />
                     ))
             }
-        </ul>
+            </ul>
+        </>
+       
     );
     
 }; 

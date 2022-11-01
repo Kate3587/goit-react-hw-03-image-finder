@@ -1,8 +1,8 @@
 
 
-const ImageGalleryItem = ({ key, srcGrid, alt }) => {
+const ImageGalleryItem = ({ srcGrid, alt }) => {
     return (
-        <li className="gallery-item" key={key}>
+        <li className="gallery-item">
             <img src={srcGrid} alt={alt} />
         </li>
     );
