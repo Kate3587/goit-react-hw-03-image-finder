@@ -1,6 +1,6 @@
 import React from "react";
 import { ThreeDots } from 'react-loader-spinner';
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+// import "react-loader-spinner/dist/loader/css/resact-spinner-loader.css";
 
 const Loader = () => (
     <ThreeDots

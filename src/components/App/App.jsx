@@ -1,5 +1,7 @@
+// import { Status } from "config.js/config";
 import { Component } from "react";
 import * as API from '../../services/api';
+import { getPhoto } from "../../services/api";
 import Searchbar from '../Searchbar/Searchbar';
 import ImageGallery from '../ImageGallery/ImageGallery';
 // import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem';
@@ -7,31 +9,59 @@ import ImageGallery from '../ImageGallery/ImageGallery';
 // import Button from '../Button/Button';
 // import Modal from '../Modal/Modal';
 
+
+
 class App extends Component {
     state = {
-      searchName: '',
       photos: [],
+      // status: Status.INIT,
     };
   
-  async getPhoto(values) {
-    const photo = await API.getPhoto(values);
-    console.log (photo)
-  }
 
-  // handleFormSubmit = searchName => {
-  //   console.log(searchName);
-  //   this.setState({ searchName });
-  // };
+  
+  async componentDidMount (search) {
+  
+      // this.setState({ isLoading: true });
+    try {
+      const photo = (await getPhoto(search)).hits
+      console.log(photo)
+      this.setState({photos: photo})
+
+      //  this.setState(prevState => (
+      //   {
+      //     photos: [...prevState.photos, photo],
+      //     //status: Status.SUCCESS
+      //   }))
+    } catch {
+      // this.setState({isError: true, status: Status.ERROR })
+      console.log('error')
+    } 
+    
+    
+      // this.setState(prevState => (
+      //   {
+      //     photos: [...prevState.photos, photo],
+      //     // isLoading: false,
+      //   }));
+   
+  };
+
 
   render() {
+    // const { isLoading } = this.state;
+    const { photos, Status } = this.state;
+    console.log(photos)
+    // if (status === Status.LOADING) {
+    //   return <Loader />;
+    // }
     return (
-    <div>
-      <Searchbar onSubmit={this.getPhoto } />
-        <ImageGallery
-          searchName={this.state.searchName}>
+      <div>
+      <Searchbar onSubmit={this.componentDidMount} />
+        <ImageGallery items={photos} />
+          {/* // search={this.state.search}> */}
         {/* <ImageGalleryItem /> */}
-      </ImageGallery>
-      {/* <Loader /> */}
+      {/* </ImageGallery> */}
+        {/* {isLoading && <Loader />} */}
       {/* <Button /> */}
       {/* <Modal /> */}
     </div>

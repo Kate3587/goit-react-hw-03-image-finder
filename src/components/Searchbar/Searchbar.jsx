@@ -4,26 +4,25 @@ import { Component } from "react";
 
 class Searchbar extends Component{
     state = {
-        searchName: '',
+        search: '',
     };
 
     handleChangeName = event => {
         this.setState({
-            searchName: event.currentTarget.value.toLowerCase()
+            search: event.currentTarget.value.toLowerCase()
         })
     };
 
     handleSubmit = event => {
         event.preventDefault()
 
-        if (this.state.searchName.trim() === '') {
+        if (this.state.search.trim() === '') {
             return alert('Please write search name.')   
         };
 
-        this.props.onSubmit(this.state.searchName)
-
+        this.props.onSubmit(this.state.search)
         this.setState({
-            searchName: ''
+            search: ''
         });
     };
 
@@ -39,8 +38,8 @@ class Searchbar extends Component{
                         className="input"
                         type="text"
                         autoComplete="off"
-                        name="searchName"
-                        value={this.state.searchName}
+                        name="search"
+                        value={this.state.search}
                         onChange={this.handleChangeName}
                         autoFocus
                         placeholder="Search images and photos"
@@ -48,9 +47,7 @@ class Searchbar extends Component{
                 </form>
             </header>
         );
-
     };
-
 };
 
 export default Searchbar;

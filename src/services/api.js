@@ -1,6 +1,14 @@
 import axios from 'axios';
 
+
+// export const getPhotoService = async() => {
+//     const data = await axios.get('https://pixabay.com/api/?q=cat&page=1&key=your_key&image_type=photo&orientation=horizontal&per_page=12');
+//     return data
+// }
+
 export const itemPerPage = 12;
+export const currentPage = 1;
+
 const API_KEY = '30976438-b9570cf67e96eec486343edd5';
 const searchParams = new URLSearchParams({
     key: API_KEY,
@@ -8,24 +16,23 @@ const searchParams = new URLSearchParams({
     orientation: 'horizontal',
     safesearch: 'true',
     per_page: itemPerPage,
+    page: currentPage,
+    
 });
 
-export const BASE_URL = `https://pixabay.com/api/?${searchParams}`;
+const postApi = axios.create({
+    baseURL: `https://pixabay.com/api/?${searchParams}`
+})
 
-export async function getPhoto(search, page) {
-    try
-    {
-        const response = await axios.get(`${BASE_URL}&page=${page}&q=${search}`);
-        return response.data;
-    } catch (error) {
-        throw new Error (error);
-    }
-}
+// export const BASE_URL = `https://pixabay.com/api/?${searchParams}`;
 
-// axios.default.baseURL = `https://pixabay.com/api/?${searchParams}`;
+export const getPhoto = async (search) => {
 
-//     export const getPhoto = async(values) => {
-//      const response = await axios.post(`${BASE_URL}&page=${page}&q=${search}`);
-//         return response.data;
-// }
+    const { data } = await postApi.get('&q=cat');
+    
+    return data;
+  
+};
+
+// https://pixabay.com/api/?q=cat&pa`ge=1&key=your_key&image_type=photo&orientation=horizontal&per_page=12
 
