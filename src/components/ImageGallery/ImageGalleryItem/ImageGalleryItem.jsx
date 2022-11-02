@@ -8,8 +8,7 @@ const ImageGalleryItem = ({ data, onClickPicture }) => {
             <li className={css.ImageGalleryItem} onClick={() => onClickPicture(largeImageURL)}>
             <img className={css.ImageGalleryItemImage} src={webformatURL} alt={user} />
             </li>
-        </>
-       
+        </>    
     );
 };
 

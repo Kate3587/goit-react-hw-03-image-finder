@@ -45,7 +45,6 @@ class App extends Component {
   handleSubmit = search => {
     this.setState({
       searchName: search,
-      // photos: [],
       page: 1,
       status: Status.INIT,
     })
