@@ -1,5 +1,6 @@
 import React from "react";
 import { Component } from "react";
+import { GoSearch } from "react-icons/go";
 import css from './Searchbar.module.css'
 
 class Searchbar extends Component{
@@ -36,7 +37,8 @@ class Searchbar extends Component{
             <header className={css.Searchbar} onSubmit={this.handleSubmit}>
                 <form className={css.SearchForm}>
                     <button type="submit" className={css.SearchFormButton}>
-                        <span className={css.SearchFormButtonLabel}>Search</span>
+                        <span className={css.SearchFormButtonLabel} >Search</span>
+                        <GoSearch/> 
                     </button>
 
                     <input
