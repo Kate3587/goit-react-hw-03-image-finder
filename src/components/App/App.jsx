@@ -30,10 +30,10 @@ class App extends Component {
     this.setState({ status: Status.LOADING });
       
     try {
-      const photo = (await getPhoto(searchName, page)).hits;
+      const {hits} = (await getPhoto(searchName, page));
       this.setState(prevState => (
         {
-          photos: [...prevState.photos, ...photo],
+          photos: [...prevState.photos, ...hits],
           status: Status.SUCCESS,
           page: page,
         }))
@@ -45,7 +45,7 @@ class App extends Component {
   handleSubmit = search => {
     this.setState({
       searchName: search,
-      photos: [],
+      // photos: [],
       page: 1,
       status: Status.INIT,
     })
@@ -85,7 +85,7 @@ class App extends Component {
       <div className={css.App}>
         <Searchbar onSubmit={this.handleSubmit} />
         {status === Status.LOADING && <Loader />}
-        {status === Status.SUCCESS && <ImageGallery items={photos} onClickPicture={this.toggleModal} />}
+        <ImageGallery items={photos} onClickPicture={this.toggleModal} />
         {status === Status.SUCCESS && <Button onLoadMore={this.handleClickMore} />}
         {modalPhoto && (
             <Modal
