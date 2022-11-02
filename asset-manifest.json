@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/Kate3587/goit-react-hw-03-image-finder.git/static/css/main.7acaea2f.css",
-    "main.js": "/Kate3587/goit-react-hw-03-image-finder.git/static/js/main.d9c3f860.js",
+    "main.css": "/Kate3587/goit-react-hw-03-image-finder.git/static/css/main.89b513a6.css",
+    "main.js": "/Kate3587/goit-react-hw-03-image-finder.git/static/js/main.3f807931.js",
     "index.html": "/Kate3587/goit-react-hw-03-image-finder.git/index.html",
-    "main.7acaea2f.css.map": "/Kate3587/goit-react-hw-03-image-finder.git/static/css/main.7acaea2f.css.map",
-    "main.d9c3f860.js.map": "/Kate3587/goit-react-hw-03-image-finder.git/static/js/main.d9c3f860.js.map"
+    "main.89b513a6.css.map": "/Kate3587/goit-react-hw-03-image-finder.git/static/css/main.89b513a6.css.map",
+    "main.3f807931.js.map": "/Kate3587/goit-react-hw-03-image-finder.git/static/js/main.3f807931.js.map"
   },
   "entrypoints": [
-    "static/css/main.7acaea2f.css",
-    "static/js/main.d9c3f860.js"
+    "static/css/main.89b513a6.css",
+    "static/js/main.3f807931.js"
   ]
 }
