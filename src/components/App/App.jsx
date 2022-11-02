@@ -1,6 +1,5 @@
 import { Status } from "config.js/config";
 import { Component } from "react";
-import * as API from '../../services/api';
 import { getPhoto } from "../../services/api";
 import Searchbar from '../Searchbar/Searchbar';
 import ImageGallery from '../ImageGallery/ImageGallery';
@@ -59,8 +58,7 @@ class App extends Component {
   };
 
   render() {
-    const { photos, status, showModal } = this.state;
-    // const { photos } = this.props;
+    const { photos, status} = this.state;
     
     return (
       <div className={css.App}>

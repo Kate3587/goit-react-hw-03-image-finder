@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import css from './ImageGalleryItem.module.css'
 
 const ImageGalleryItem = ({ srcGrid, alt }) => {
@@ -12,3 +13,8 @@ const ImageGalleryItem = ({ srcGrid, alt }) => {
 };
 
 export default ImageGalleryItem;
+
+ImageGalleryItem.propTypes = {
+    srcGrid: PropTypes.string.isRequired,
+    alt: PropTypes.string.isRequired,
+};
