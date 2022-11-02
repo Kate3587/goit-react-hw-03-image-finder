@@ -6,9 +6,7 @@ import Searchbar from '../Searchbar/Searchbar';
 import ImageGallery from '../ImageGallery/ImageGallery';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
-// import Modal from '../Modal/Modal';
-import { itemPerPage } from '../../services/api';
-
+import css from '../App/App.module.css'
 
 
 class App extends Component {
@@ -18,11 +16,6 @@ class App extends Component {
       page: 1,
       status: Status.INIT,
     };
-  
-  // async componentDidMount ( ) {
-  //   const { searchName, page } = this.state; 
-  //   this.fetchPhoto(searchName, page)
-  // };
 
   async componentDidUpdate(_, prevState) {
     const { searchName, page } = this.state; 
@@ -48,7 +41,6 @@ class App extends Component {
           }))
       }
     } catch {
-        // this.setState({ status: Status.ERROR })
         console.log('error')
       }
     }
@@ -67,15 +59,16 @@ class App extends Component {
   };
 
   render() {
-    const { photos, status } = this.state;
+    const { photos, status, showModal } = this.state;
+    // const { photos } = this.props;
     
     return (
-      <div>
+      <div className={css.App}>
         <Searchbar onSubmit={this.handleSubmit} />
         {status === Status.LOADING && <Loader />}
         {status === Status.SUCCESS && <ImageGallery items={photos} />}
         {status === Status.SUCCESS && <Button onLoadMore={this.handleClickMore} />}
-      {/* <Modal /> */}
+       
     </div>
   );
   } 

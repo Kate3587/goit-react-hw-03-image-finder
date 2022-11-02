@@ -1,10 +1,13 @@
-
+import css from './ImageGalleryItem.module.css'
 
 const ImageGalleryItem = ({ srcGrid, alt }) => {
     return (
-        <li className="gallery-item">
-            <img src={srcGrid} alt={alt} />
-        </li>
+        <>
+            <li className={css.ImageGalleryItem}>
+            <img className={css.ImageGalleryItemImage} src={srcGrid} alt={alt} />
+            </li>
+        </>
+       
     );
 };
 

@@ -1,6 +1,7 @@
+import css from './Button.module.css'
 
 const Button = ({onLoadMore}) => (
-    <div>
+    <div className={css.Button}>
         <button
         onClick={onLoadMore}
         type="button">
