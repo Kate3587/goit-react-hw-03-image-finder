@@ -5,33 +5,20 @@ import css from './Modal.module.css';
 
 class Modal extends Component {
     componentDidMount() {
-        window.addEventListener('keydown', this.handleKeyDown )
+        document.addEventListener('keydown', this.props.handleKeyDown)
     };
 
     componentWillUnmount() {
-        window.removeEventListener('keydown', this.handleKeyDown )
+        document.removeEventListener('keydown', this.props.handleKeyDown)
     };
-
-    handleKeyDown = event => {
-        if (event.code === 'Escape') {
-            console.log(event.code)
-            this.props.onClose()
-        }
-    };
-
-    handleBackdropClick = event => {
-        if (event.currentTarget === event.target) {
-            this.props.onClose()
-        }
-    }; 
 
     render() {
-        const { srcLarge, alt } = this.props;
+        const {handleModalClose, modalPhoto} = this.props
 
         return (
-            <div className={css.Overlay} onClick ={this.handleBackdropClick}>
+            <div className={css.Overlay} onClick={handleModalClose}>
                 <div className={css.Modal}>
-                    <img src={srcLarge} alt={alt} />
+                    <img src={modalPhoto} alt={''} />
                 </div>
             </div>
         )

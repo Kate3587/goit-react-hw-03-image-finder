@@ -5,68 +5,94 @@ import Searchbar from '../Searchbar/Searchbar';
 import ImageGallery from '../ImageGallery/ImageGallery';
 import Loader from '../Loader/Loader';
 import Button from '../Button/Button';
+import Modal from '../Modal/Modal';
 import css from '../App/App.module.css'
-
 
 class App extends Component {
     state = {
       photos: [],
       searchName: '',
       page: 1,
+      modalPhoto: '',
       status: Status.INIT,
     };
+  
+   async componentDidUpdate(_, prevState) {
+    const { searchName, page} = this.state;
 
-  async componentDidUpdate(_, prevState) {
-    const { searchName, page } = this.state; 
-   
-    if (prevState.searchName !== searchName) {
-      this.fetchPhoto(searchName, page)  
-       
+    if (prevState.searchName !== searchName || prevState.page !== page) {
+      this.fetchPhoto(searchName, page);
     }
   };
- 
+
+
   fetchPhoto = async (searchName, page) => {
     this.setState({ status: Status.LOADING });
       
     try {
       const photo = (await getPhoto(searchName, page)).hits;
-      const currentPage = page + 1;
-      if (currentPage <= photo.length) {
-        this.setState(prevState => (
-          {
-            photos: [...prevState.photos,...photo],
-               page: currentPage,
-            status: Status.SUCCESS
-          }))
-      }
+      this.setState(prevState => (
+        {
+          photos: [...prevState.photos, ...photo],
+          status: Status.SUCCESS,
+          page: page,
+        }))
     } catch {
-        console.log('error')
-      }
+      console.log('error')
     }
+  };
 
-  handleSubmit = (search) => {
+  handleSubmit = search => {
     this.setState({
       searchName: search,
+      photos: [],
+      page: 1,
+      status: Status.INIT,
     })
   };
 
-  handleClickMore = () => {
-    const { searchName, page} = this.state;
+  handleClickMore = () => { 
     
-    this.fetchPhoto(searchName, page);
-
+    this.setState( prevState  => ({
+      page: prevState.page + 1,
+    }))
   };
 
+  toggleModal = (data) => {
+    this.setState({
+        modalPhoto: data,
+    })
+    };
+  
+    handleBackdropClick = event => {
+
+      if (event.currentTarget === event.target) {
+      this.setState({ modalPhoto: '' });
+    }  
+    };
+
+  handleKeyDown = event => {
+      
+    if (event.key === 'Escape') {
+          this.setState({ modalPhoto: '' });
+        }     
+    };
+
   render() {
-    const { photos, status} = this.state;
+    const { photos, status, modalPhoto} = this.state;
     
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleSubmit} />
         {status === Status.LOADING && <Loader />}
-        {status === Status.SUCCESS && <ImageGallery items={photos} />}
+        {status === Status.SUCCESS && <ImageGallery items={photos} onClickPicture={this.toggleModal} />}
         {status === Status.SUCCESS && <Button onLoadMore={this.handleClickMore} />}
-       
+        {modalPhoto && (
+            <Modal
+              modalPhoto={modalPhoto}
+              handleModalClose={this.handleBackdropClick}
+              handleKeyDown={this.handleKeyDown}
+            />)}
     </div>
   );
   } 
