@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import css from './Modal.module.css';
 
 function Modal({ modalPhoto, handleModalClose, handleKeyDown }) {
+    
     useEffect(() => {
         document.addEventListener('keydown', handleKeyDown);
 

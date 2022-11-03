@@ -1,5 +1,5 @@
 import { Status } from "config.js/config";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getPhoto } from "../../services/api";
 import Searchbar from '../Searchbar/Searchbar';
 import ImageGallery from '../ImageGallery/ImageGallery';
@@ -14,9 +14,30 @@ function App() {
   const [page, setPage] = useState(1);
   const [modalPhoto, setModalPhoto] = useState('');
   const [status, setStatus] = useState(Status.INIT);
+  const galeryRef = useRef();
 
-  const useEffect (() => {
-    fetchPhoto(searchName, page);
+  useEffect (() => {
+    if (searchName) {
+      setStatus(Status.LOADING);
+      fetchPhoto(searchName, page);
+    }
+
+    async function fetchPhoto (){
+      
+    try {
+      const { hits } = await getPhoto(searchName, page);
+      setStatus(Status.SUCCESS)
+      setPhotos(prevState => [...prevState, ...hits])
+    
+      // this.setState(prevState => (
+      //   {
+      //     photos: [...prevState.photos, ...hits],
+        
+      //   }))
+    } catch (error) {
+      console.log('error')
+    }
+  };
   }, [searchName, page])
     
   //  async componentDidUpdate(_, prevState) {
@@ -27,23 +48,23 @@ function App() {
   // };
 
 
-  fetchPhoto = async (searchName, page) => {
-    this.setState({ status: Status.LOADING });
+  // fetchPhoto = async (searchName, page) => {
+  //   this.setState({ status: Status.LOADING });
       
-    try {
-      const { hits } = (await getPhoto(searchName, page));
-      setPhotos(prevState => [...prevState.photos, ...hits])
-      setStatus(Status.SUCCESS)
-      setPage(page);
-      // this.setState(prevState => (
-      //   {
-      //     photos: [...prevState.photos, ...hits],
+  //   try {
+  //     const { hits } = (await getPhoto(searchName, page));
+  //     setPhotos(prevState => [...prevState.photos, ...hits])
+  //     setStatus(Status.SUCCESS)
+  //     setPage(page);
+  //     // this.setState(prevState => (
+  //     //   {
+  //     //     photos: [...prevState.photos, ...hits],
         
-      //   }))
-    } catch {
-      console.log('error')
-    }
-  };
+  //     //   }))
+  //   } catch {
+  //     console.log('error')
+  //   }
+  // };
 
   const handleSubmit = search => {
     setSearchName(search);
@@ -52,7 +73,7 @@ function App() {
   };
 
   const handleClickMore = () => { 
-
+    setPage(prevState => prevState +1)
     
     // this.setState( prevState  => ({
     //   page: prevState.page + 1,
@@ -64,22 +85,18 @@ function App() {
     };
   
   const handleBackdropClick = event => {
+    if (event.currentTarget === event.target) setModalPhoto(''); 
+  };
 
-    if (event.currentTarget === event.target) {
-      setModalPhoto('');
-    }  
-    };
-
-  handleKeyDown = event => {  
-    if (event.key === 'Escape') {
-      setModalPhoto('');  
-    };
+  const handleKeyDown = event => {  
+    if (event.key === 'Escape')setModalPhoto('');  
+  };
     
     return (
       <div className={css.App}>
         <Searchbar onSubmit={handleSubmit} />
         {status === Status.LOADING && <Loader />}
-        <ImageGallery items={photos} onClickPicture={toggleModal} />
+        <ImageGallery ref={galeryRef} items={photos} onClickPicture={toggleModal} />
         {status === Status.SUCCESS && <Button onLoadMore={handleClickMore} />}
         {modalPhoto && (
             <Modal
@@ -89,7 +106,6 @@ function App() {
             />)}
     </div>
   );
-  } 
-};
+  }
 
 export default App;
