@@ -1,40 +1,28 @@
 import React from "react";
-import { Component } from "react";
+import { useState } from "react";
 import { GoSearch } from "react-icons/go";
 import css from './Searchbar.module.css'
 
-class Searchbar extends Component{
-    state = {
-        search: '',
+function Searchbar({ onSubmit }) {
+    const [search, setSearch] = useState('');
+    
+   const handleChangeName = event => {
+        setSearch(event.currentTarget.value.toLowerCase())
     };
 
-    handleChangeName = event => {
-        const { value } = event.currentTarget;
-        this.setState({
-            search: value.toLowerCase()
-        })
-    };
-
-    handleSubmit = event => {
+   const handleSubmit = event => {
         event.preventDefault()
-
-        const { search } = this.state;
 
         if (search.trim() === '') {
             return alert('Please write search name.')   
         };
 
-        this.props.onSubmit(search)
-        this.setState({
-            search: ''
-        });
+       onSubmit(search)
+       setSearch('')
     };
 
-    render() {
-        const { search } = this.state;
-
         return (
-            <header className={css.Searchbar} onSubmit={this.handleSubmit}>
+            <header className={css.Searchbar} onSubmit={handleSubmit}>
                 <form className={css.SearchForm}>
                     <button type="submit" className={css.SearchFormButton}>
                         <span className={css.SearchFormButtonLabel} >Search</span>
@@ -47,15 +35,15 @@ class Searchbar extends Component{
                         autoComplete="off"
                         name="search"
                         value={search}
-                        onChange={this.handleChangeName}
+                        onChange={handleChangeName}
                         autoFocus
                         placeholder="Search images and photos"
                     />
                 </form>
             </header>
         );
-    };
 };
+    
 
 export default Searchbar;
 

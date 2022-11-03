@@ -1,5 +1,5 @@
 import { Status } from "config.js/config";
-import { Component } from "react";
+import { useState, useEffect } from "react";
 import { getPhoto } from "../../services/api";
 import Searchbar from '../Searchbar/Searchbar';
 import ImageGallery from '../ImageGallery/ImageGallery';
@@ -8,89 +8,84 @@ import Button from '../Button/Button';
 import Modal from '../Modal/Modal';
 import css from '../App/App.module.css'
 
-class App extends Component {
-    state = {
-      photos: [],
-      searchName: '',
-      page: 1,
-      modalPhoto: '',
-      status: Status.INIT,
-    };
-  
-   async componentDidUpdate(_, prevState) {
-    const { searchName, page} = this.state;
+function App() {
+  const [photos, setPhotos] = useState([]);
+  const [searchName, setSearchName] = useState('');
+  const [page, setPage] = useState(1);
+  const [modalPhoto, setModalPhoto] = useState('');
+  const [status, setStatus] = useState(Status.INIT);
 
-    if (prevState.searchName !== searchName || prevState.page !== page) {
-      this.fetchPhoto(searchName, page);
-    }
-  };
+  const useEffect (() => {
+    fetchPhoto(searchName, page);
+  }, [searchName, page])
+    
+  //  async componentDidUpdate(_, prevState) {
+
+  //   if (prevState.searchName !== searchName || prevState.page !== page) {
+  //     fetchPhoto(searchName, page);
+  //   }
+  // };
 
 
   fetchPhoto = async (searchName, page) => {
     this.setState({ status: Status.LOADING });
       
     try {
-      const {hits} = (await getPhoto(searchName, page));
-      this.setState(prevState => (
-        {
-          photos: [...prevState.photos, ...hits],
-          status: Status.SUCCESS,
-          page: page,
-        }))
+      const { hits } = (await getPhoto(searchName, page));
+      setPhotos(prevState => [...prevState.photos, ...hits])
+      setStatus(Status.SUCCESS)
+      setPage(page);
+      // this.setState(prevState => (
+      //   {
+      //     photos: [...prevState.photos, ...hits],
+        
+      //   }))
     } catch {
       console.log('error')
     }
   };
 
-  handleSubmit = search => {
-    this.setState({
-      searchName: search,
-      page: 1,
-      status: Status.INIT,
-    })
+  const handleSubmit = search => {
+    setSearchName(search);
+    setPage(1);
+    setStatus(Status.INIT);
   };
 
-  handleClickMore = () => { 
+  const handleClickMore = () => { 
+
     
-    this.setState( prevState  => ({
-      page: prevState.page + 1,
-    }))
+    // this.setState( prevState  => ({
+    //   page: prevState.page + 1,
+    // }))
   };
 
-  toggleModal = (data) => {
-    this.setState({
-        modalPhoto: data,
-    })
+  const toggleModal = (data) => {
+    setModalPhoto(data);
     };
   
-    handleBackdropClick = event => {
+  const handleBackdropClick = event => {
 
-      if (event.currentTarget === event.target) {
-      this.setState({ modalPhoto: '' });
+    if (event.currentTarget === event.target) {
+      setModalPhoto('');
     }  
     };
 
-  handleKeyDown = event => {
-      
+  handleKeyDown = event => {  
     if (event.key === 'Escape') {
-          this.setState({ modalPhoto: '' });
-        }     
+      setModalPhoto('');  
     };
-
-  render() {
-    const { photos, status, modalPhoto} = this.state;
     
     return (
       <div className={css.App}>
-        <Searchbar onSubmit={this.handleSubmit} />
+        <Searchbar onSubmit={handleSubmit} />
         {status === Status.LOADING && <Loader />}
-        <ImageGallery items={photos} onClickPicture={this.toggleModal} />
-        {status === Status.SUCCESS && <Button onLoadMore={this.handleClickMore} />}
+        <ImageGallery items={photos} onClickPicture={toggleModal} />
+        {status === Status.SUCCESS && <Button onLoadMore={handleClickMore} />}
         {modalPhoto && (
             <Modal
               modalPhoto={modalPhoto}
-              handleModalClose={this.handleBackdropClick}
-              handleKeyDown={this.handleKeyDown}
+              handleModalClose={handleBackdropClick}
+              handleKeyDown={handleKeyDown}
             />)}
     </div>
   );

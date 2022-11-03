@@ -1,19 +1,16 @@
 import React from 'react';
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import css from './Modal.module.css';
 
-class Modal extends Component {
-    componentDidMount() {
-        document.addEventListener('keydown', this.props.handleKeyDown)
-    };
+function Modal({ modalPhoto, handleModalClose, handleKeyDown }) {
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDown);
 
-    componentWillUnmount() {
-        document.removeEventListener('keydown', this.props.handleKeyDown)
-    };
-
-    render() {
-        const {handleModalClose, modalPhoto} = this.props
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown)
+        }
+    }, [modalPhoto]);
 
         return (
             <div className={css.Overlay} onClick={handleModalClose}>
@@ -22,9 +19,8 @@ class Modal extends Component {
                 </div>
             </div>
         )
-    }
-};
-
+}
+    
 export default Modal;
 
 Modal.propTypes = {
